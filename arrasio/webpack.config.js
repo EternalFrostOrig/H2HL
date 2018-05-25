@@ -1,3 +1,4 @@
+
 module.exports = {
     entry: "./src/client/js/app.js",
     output: {
