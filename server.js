@@ -3,15 +3,13 @@
 /*global goog, Map, let */
 "use strict";
 
-console.log("HELLO")
-
 // General requires
 require('google-closure-library');
 goog.require('goog.structs.PriorityQueue');
 goog.require('goog.structs.QuadTree');
 
 // Import game settings.
-const c = require('arrasio/config.json');
+const c = require('./config.json');
 
 // Import utilities.
 const util = require('./lib/util');
@@ -212,7 +210,7 @@ const room = {
         square: c.WIDTH * c.HEIGHT / 100000000,
         linear: Math.sqrt(c.WIDTH * c.HEIGHT / 100000000),
     },
-    maxFood: c.WIDTH * c.HEIGHT / 100000 * c.FOOD_AMOUNT,
+    maxFood: c.WIDTH * c.HEIGHT / 20000 * c.FOOD_AMOUNT,
     isInRoom: location => {
         return (location.x < 0 || location.x > c.WIDTH || location.y < 0 || location.y > c.HEIGHT) ? (
             false
@@ -245,7 +243,7 @@ const room = {
     room.findType('bas4');
     room.findType('roid');
     room.findType('rock');
-    room.nestFoodAmount = 1.5 * Math.sqrt(room.nest.length) / room.xgrid / room.ygrid;
+    room.nestFoodAmount = 1.1 * Math.sqrt(room.nest.length) / room.xgrid / room.ygrid;
     room.random = () => {
         return {
             x: ran.irandom(room.width),
@@ -347,7 +345,7 @@ function nullVector(v) {
 
 // Get class definitions and index them
 var Class = (() => {
-    let def = require('./lib/definitions'),
+  let def = require('./lib/definitions'),
         i = 0;
     for (let k in def) {
         if (!def.hasOwnProperty(k)) continue;
@@ -2701,13 +2699,11 @@ var logs = (() => {
 })();
 
 // Essential server requires
-var express = require('express'),
-    http = require('http'),
+var http = require('http'),
     url = require('url'),
-    WebSocket = require('ws'),
-    app = express(),
+    WebSocket = require('uws'),
     fs = require('fs'),
-    exportDefintionsToClient = (() => { 
+    mockupJsonData = (() => { 
         function rounder(val) {
             if (Math.abs(val) < 0.00001) val = 0;
             return +val.toPrecision(6);
@@ -2955,63 +2951,13 @@ var express = require('express'),
         purgeEntities();
         // Build the function to return
         let writeData = JSON.stringify(mockupData);
-        return loc => {
-            util.log('Preparing definition export.');
-            fs.writeFileSync(loc, writeData, 'utf8', (err) => {
-                if (err) return util.error(err);
-            });
-            util.log('Mockups written to ' + loc + '!');
-        };
-    })(),
-    generateVersionControlHash = (() => {
-        let crypto = require('crypto');
-        let write = (() => {
-            let hash = [null, null];
-            return (loc, data, numb) => {
-                // The callback is executed on reading completion
-                hash[numb] = crypto.createHash('sha1').update(data).digest('hex');
-                if (hash[0] && hash[1]) {
-                    let finalHash = hash[0] + hash[1];
-                    util.log('Client hash generated. Hash is "' + finalHash + '".');
-                    // Write the hash to a place the client can read it.
-                    fs.writeFileSync(loc, finalHash, 'utf8', err => {
-                        if (err) return util.error(err);
-                    });
-                    util.log('Hash written to ' + loc + '!');
-                }
-            };
-        })();
-        return loc => {
-            let path1 = __dirname + '/../client/js/app.js';
-            let path2 = __dirname + '/lib/definitions.js';
-            util.log('Building client version hash, reading from ' + path1 + ' and ' + path2 + '...');
-            // Read the client application
-            fs.readFile(path1, 'utf8', (err, data) => {
-                if (err) return util.error(err);
-                util.log('app.js complete.');
-                write(loc, data, 0);
-            });
-            fs.readFile(path2, 'utf8', (err, data) => {
-                if (err) return util.error(err);
-                util.log('definitions.js complete.');
-                write(loc, data, 1);
-            });
-        };
+        return writeData;
     })();
-
-// Give the client upon request
-exportDefintionsToClient(__dirname + '/../client/json/mockups.json');
-generateVersionControlHash(__dirname + '/../client/api/vhash');
-if (c.servesStatic) app.use(express.static(__dirname + '/../client'));
 
 // Websocket behavior
 const sockets = (() => {
     const protocol = require('./lib/fasttalk');
-    let clients = [], players = [], bannedIPs = [], suspiciousIPs = [], connectedIPs = [],
-        bannedNames = [
-            'FREE_FOOD_LUCARIO',
-            'FREE FOOD'
-        ];
+    let clients = [], players = [];
     return {
         broadcast: message => {
             clients.forEach(socket => {
@@ -3022,17 +2968,6 @@ const sockets = (() => {
             // Define shared functions
             // Closing the socket
             function close(socket) {
-                // Free the IP
-                let n = connectedIPs.findIndex(w => { return w.ip === socket.ip; });
-                if (n !== -1) {
-                    util.log(socket.ip + " disconnected.");
-                    util.remove(connectedIPs, n);
-                }
-                // Free the token
-                if (socket.key != '') { 
-                    keys.push(socket.key);
-                    util.log("Token freed.");
-                }   
                 // Figure out who the player was
                 let player = socket.player,
                     index = players.indexOf(player);
@@ -3057,27 +2992,9 @@ const sockets = (() => {
                 util.remove(clients, clients.indexOf(socket));        
                 util.log('[INFO] Socket closed. Views: ' + views.length + '. Clients: ' + clients.length + '.');
             }
-            // Banning
-            function ban(socket) {
-                if (bannedIPs.findIndex(ip => { return ip === socket.ip; }) === -1) {
-                    bannedIPs.push(socket.ip);
-                } // No need for duplicates
-                socket.terminate();
-                util.warn(socket.ip + ' banned!');
-            }
             // Being kicked 
             function kick(socket, reason = 'No reason given.') {
-                let n = suspiciousIPs.findIndex(n => { return n.ip === socket.ip; });
-                if (n === -1) {
-                    suspiciousIPs.push({ ip: socket.ip, warns: 1, });
-                    util.warn(reason + ' Kicking. 1 warning.');
-                } else {
-                    suspiciousIPs[n].warns++;
-                    util.warn(reason + ' Kicking. ' + suspiciousIPs[n].warns + ' warnings.');
-                    if (suspiciousIPs[n].warns >= c.socketWarningLimit) {
-                        ban(socket);
-                    }
-                }
+                util.warn(reason + ' Kicking.');
                 socket.lastWords('K');
             }
             // Handle incoming messages
@@ -3095,9 +3012,18 @@ const sockets = (() => {
                 // Handle the request
                 switch (m.shift()) {
                 case 'k': { // key verification
-                    if (m.length !== 1) { socket.kick('Ill-sized key request.'); return 1; }
+                    if (m.length > 1) { socket.kick('Ill-sized key request.'); return 1; }
+                    if (socket.status.verified) { socket.kick('Duplicate player spawn attempt.'); return 1; }
+                    socket.talk('w', true)
+                    if (m.length === 1) {
+                        let key = m[0];
+                        socket.key = key;
+                        util.log('[INFO] A socket was verified with the token: '); util.log(key);
+                    }
+                    socket.verified = true;
+                    util.log('Clients: ' + clients.length);
+                    /*if (m.length !== 1) { socket.kick('Ill-sized key request.'); return 1; }
                     // Get data
-                    let key = m[0];
                     // Verify it
                     if (typeof key !== 'string') { socket.kick('Weird key offered.'); return 1; }
                     if (key.length > 64) { socket.kick('Overly-long key offered.'); return 1; }
@@ -3117,7 +3043,7 @@ const sockets = (() => {
                         // If not, kick 'em (nicely)
                         util.log('[INFO] Invalid player verification attempt.');
                         socket.lastWords('w', false);
-                    }
+                    }*/
                 } break;
                 case 's': { // spawn request
                     if (!socket.status.deceased) { socket.kick('Trying to spawn while already alive.'); return 1; }
@@ -3195,26 +3121,21 @@ const sockets = (() => {
                         commands = m[2];
                     // Verify data
                     if (typeof target.x !== 'number' || typeof target.y !== 'number' || typeof commands !== 'number') { socket.kick('Weird downlink.'); return 1; }
-                    if (commands > 255 || target.x !== Math.round(target.x) || target.y !== Math.round(target.y)) { socket.kick('Malformed command packet.'); return 1; }
+                    if (commands > 255) { socket.kick('Malformed command packet.'); return 1; }
                     // Put the new target in
-                    player.target = target;
+                    player.target = target
                     // Process the commands
-                    let val = [false, false, false, false, false, false, false, false];
-                    for (let i=7; i>=0; i--) {
-                        if (commands >= Math.pow(2, i)) {
-                            commands -= Math.pow(2, i);
-                            val[i] = true;
-                        }
+                    if (player.command != null && player.body != null) {
+                        player.command.up    = (commands &  1)
+                        player.command.down  = (commands &  2) >> 1
+                        player.command.left  = (commands &  4) >> 2
+                        player.command.right = (commands &  8) >> 3
+                        player.command.lmb   = (commands & 16) >> 4
+                        player.command.mmb   = (commands & 32) >> 5
+                        player.command.rmb   = (commands & 64) >> 6
                     }
-                    player.command.up = val[0];
-                    player.command.down = val[1];
-                    player.command.left = val[2];
-                    player.command.right = val[3];
-                    player.command.lmb = val[4];
-                    player.command.mmb = val[5];
-                    player.command.rmb = val[6];
                     // Update the thingy 
-                    socket.timeout.set(commands);
+                    socket.timeout.set(commands)
                 } break;
                 case 't': { // player toggle
                     if (m.length !== 1) { socket.kick('Ill-sized toggle.'); return 1; }
@@ -3276,7 +3197,7 @@ const sockets = (() => {
                 case 'L': { // level up cheat
                     if (m.length !== 0) { socket.kick('Ill-sized level-up request.'); return 1; }
                     // cheatingbois
-                    if (player.body != null) { if (player.body.skill.level < c.SKILL_CHEAT_CAP || ((socket.key === 'testk' || socket.key ==='testl') && player.body.skill.level < 45)) {
+                    if (player.body != null) { if (player.body.skill.level < c.SKILL_CHEAT_CAP || ((socket.key === process.env.SECRET) && player.body.skill.level < 45)) {
                         player.body.skill.score += player.body.skill.levelScore;
                         player.body.skill.maintain();
                         player.body.refreshBodyAttributes();
@@ -3285,7 +3206,7 @@ const sockets = (() => {
                 case '0': { // testbed cheat
                     if (m.length !== 0) { socket.kick('Ill-sized testbed request.'); return 1; }
                     // cheatingbois
-                    if (player.body != null) { if (socket.key === 'testk' || socket.key ==='testl') {
+                    if (player.body != null) { if (socket.key === process.env.SECRET) {
                         player.body.define(Class.testbed);
                     } }
                 } break;
@@ -3561,7 +3482,7 @@ const sockets = (() => {
                         body.name = name; // Define the name
                         // Dev hax
                         if (socket.key === 'testl' || socket.key === 'testk') {
-                            body.name = "\u0000";
+                            body.name = "\u200b" + body.name;
                             body.define({ CAN_BE_ON_LEADERBOARD: false, });
                         }                        
                         body.addController(new io_listenToPlayer(body, player)); // Make it listen
@@ -3672,7 +3593,9 @@ const sockets = (() => {
                             // 13: health
                             Math.ceil(255 * data.health),
                             // 14: shield
-                            Math.round(255 * data.shield)
+                            Math.round(255 * data.shield),
+                            // 15: alpha
+                            Math.round(255 * 1),
                         );
                         if (data.type & 0x04) {
                             output.push(
@@ -4163,34 +4086,7 @@ const sockets = (() => {
             // This function initalizes the socket upon connection
             return (socket, req) => {
                 // Get information about the new connection and verify it
-                if (c.servesStatic || req.connection.remoteAddress === '::ffff:127.0.0.1' || req.connection.remoteAddress === '::1') {
-                    socket.ip = req.headers['x-forwarded-for'];
-                    // Make sure we're not banned...
-                    if (bannedIPs.findIndex(ip => { return ip === socket.ip; }) !== -1) {
-                        socket.terminate(); 
-                        return 1;
-                    }
-                    // Make sure we're not already connected...
-                    if (!c.servesStatic) { 
-                        let n = connectedIPs.findIndex(w => { return w.ip === socket.ip; });
-                        if (n !== -1) {
-                            // Don't allow more than 2
-                            if (connectedIPs[n].number > 1) {
-                                util.warn('Too many connections from the same IP. [' + socket.ip + ']');
-                                socket.terminate();
-                                return 1;
-                            } else connectedIPs[n].number++;
-                        } else connectedIPs.push({ ip: socket.ip, number: 1, });
-                    }
-                } else { 
-                    // Don't let banned IPs connect.
-                    util.warn(req.connection.remoteAddress);
-                    util.warn(req.headers['x-forwarded-for']);
-                    socket.terminate();
-                    util.warn('Inappropiate connection request: header spoofing. Socket terminated.');
-                    return 1;
-                }
-                util.log(socket.ip + ' is trying to connect...');
+                util.log('A client is trying to connect...');
                 // Set it up
                 socket.binaryType = 'arraybuffer';
                 socket.key = '';
@@ -4248,7 +4144,6 @@ const sockets = (() => {
                 socket.makeView = () => { socket.view = eyes(socket); };
                 socket.makeView();
                 // Put the fundamental functions in the socket
-                socket.ban = () => ban(socket);
                 socket.kick = reason => kick(socket, reason);
                 socket.talk = (...message) => {
                     if (socket.readyState === socket.OPEN) { 
@@ -4272,7 +4167,7 @@ const sockets = (() => {
                 };
                 // Log it
                 clients.push(socket);
-                util.log('[INFO] New socket opened with ', socket.ip);
+                util.log('[INFO] New socket opened');
             };
         })(),
     };
@@ -5112,20 +5007,37 @@ var speedcheckloop = (() => {
 
 /** BUILD THE SERVERS **/  
 // Turn the server on
-var server = http.createServer(app);
-var websockets = (() => {
+let server = http.createServer((req, res) => {
+  let { pathname } = url.parse(req.url)
+  switch (pathname) {
+    case '/':
+      res.writeHead(200)
+      res.end('<!DOCTYPE html><h3>Hello</h3>')
+    break
+    case '/mockups.json':
+      res.setHeader('Access-Control-Allow-Origin', '*')
+      res.writeHead(200)
+      res.end(mockupJsonData)
+    break
+    default:
+      res.writeHead(404)
+      res.end()
+  }
+}).listen(process.env.PORT || 8080)
+
+let websockets = (() => {
     // Configure the websocketserver
-    let config = { server: server };
-    if (c.servesStatic) {
-        server.listen(c.port, function httpListening() {
-            util.log((new Date()) + ". Joint HTTP+Websocket server turned on, listening on port "+server.address().port + ".");
-        });
+    let config = { server: server }
+        server.listen(8080, function httpListening() {
+            util.log((new Date()) + ". Joint HTTP+Websocket server turned on, listening on port "+server.address().port + ".")
+        })
+    /*if (c.servesStatic) {
     } else {
-        config.port = c.port; 
-        util.log((new Date()) + 'Websocket server turned on, listening on port ' + c.port + '.'); 
-    }
+        config.port = 8080; 
+        util.log((new Date()) + 'Websocket server turned on, listening on port ' + 8080 + '.'); 
+    }*/
     // Build it
-    return new WebSocket.Server(config);
+    return new WebSocket.Server(config)
 })().on('connection', sockets.connect); 
 
 // Bring it to life

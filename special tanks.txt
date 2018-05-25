@@ -1,0 +1,11 @@
+Special tanks:
+  - Railgun (destroyer)
+  - Autocruiser (cruiser)
+  - Surfer (tri-angle)
+  - Swarmer (destroyer)
+  - Quadtrapper (trapper)
+  - Dual (twin)
+  - Testbed stuff (basic)
+  - Rifle (sniper)
+  - Blockade (trapper)
+  - 

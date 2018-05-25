@@ -1,0 +1,21 @@
+dependencies:
+  google-closure-library: 20180506.0.0
+  uws: 9.148.0
+packages:
+  /google-closure-library/20180506.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-LS2pLCfBDcADE//4ClFYtVTKmQg=
+  /uws/9.148.0:
+    dev: false
+    engines:
+      node: '>=4'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-vWt+e8dOdwLM4neb1xIeZuQ7ZUN3l7n0qTKrOUtU1EZrV4BpmrSnsEL30d062/ocqRMGtLpwzVFsLKFgXomA9g==
+registry: 'https://registry.npmjs.org/'
+shrinkwrapMinorVersion: 6
+shrinkwrapVersion: 3
+specifiers:
+  google-closure-library: ^20180506.0.0
+  uws: 9.148.x
