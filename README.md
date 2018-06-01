@@ -5,4 +5,4 @@ A fan-made sequel to diep.io
 
 
 
-http://arras.surge.sh/#private=efrost-arras.glitch.me
+http://arras.surge.sh/#private=efrost-arras-private.glitch.me;EFrostToken

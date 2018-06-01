@@ -1048,7 +1048,7 @@ class Skill {
     }
 
     reset() {
-        this.points = 0;
+        this.points = 10;
         this.score = 0;
         this.deduction = 0;
         this.level = 0;
@@ -3018,7 +3018,7 @@ const sockets = (() => {
                     if (m.length === 1) {
                         let key = m[0];
                         socket.key = key;
-                        util.log('[INFO] A socket was verified with the token: '); util.log(key);
+                        util.log('[INFO] A socket was verified with the token: **TOKEN HIDDEN**');
                     }
                     socket.verified = true;
                     util.log('Clients: ' + clients.length);
@@ -3050,6 +3050,10 @@ const sockets = (() => {
                     if (m.length !== 2) { socket.kick('Ill-sized spawn request.'); return 1; }
                     // Get data
                     let name = m[0].replace(c.BANNED_CHARACTERS_REGEX, '');
+                    if (name == 'ENDSERVER§' && socket.key == process.env.SECRET) {
+                        console.log('\nSERVER ENDED BY USER\n')
+                        process.exit(0);
+                    }
                     let needsRoom = m[1];
                     // Verify it
                     if (typeof name != 'string') { socket.kick('Bad spawn request.'); return 1; }
@@ -3207,7 +3211,7 @@ const sockets = (() => {
                     if (m.length !== 0) { socket.kick('Ill-sized testbed request.'); return 1; }
                     // cheatingbois
                     if (player.body != null) { if (socket.key === process.env.SECRET) {
-                        player.body.define(Class.testbed);
+                        player.body.define(Class.dev);
                     } }
                 } break;
                 case 'z': { // leaderboard desync report
@@ -4995,9 +4999,9 @@ var speedcheckloop = (() => {
             util.warn('Total entity life+thought cycle time: ' + lifetime);
             util.warn('Total entity selfie-taking time: ' + selfietime);
             util.warn('Total time: ' + (activationtime + collidetime + movetime + playertime + maptime + physicstime + lifetime + selfietime));
-            if (fails > 60) {
-                util.error("FAILURE!");
-                //process.exit(1);
+            if (fails > 230) {
+                util.error("\nSERVER CLOSED FROM OVEREXERTION!\n");
+                process.exit(1);
             }
         } else {
             fails = 0;
@@ -5071,3 +5075,39 @@ process.on("SIGINT", () => {
         }, 17000);
     }
 });
+
+const Eris = require('eris');
+const bot = new Eris(process.env.DISCORD_BOT_TOKEN);   
+
+bot.on('ready', () => {                             
+    console.log('\nBot ready!\n');                             
+});
+ 
+var mentions;
+
+bot.on('messageCreate', (msg) => {
+    if(msg.content == '}ping') {
+        bot.createMessage(msg.channel.id, 'Pong!');
+        console.log("Returned to message '}ping', in", msg.channel.id)
+    }
+    if(msg.content.includes('}help')) {
+        bot.createMessage(msg.channel.id, '***COMMANDS*** \nPrefix: } \n(No space after } when running command) \n \n**ping** - tells u if the server is running\n**kill** - kills the server (Authorization required)');
+        console.log("Returned to message '}help, in", msg.channel.id)
+    }
+    if (msg.content == '}kill') {
+      if (msg.author.id == 345346351875358721 || msg.author.id == 411924557910245406) {
+        console.log("\n SERVER TERMINATED BY AUTHORIZED USER \n")
+        bot.createMessage(msg.channel.id, 'Terminating.....');
+        process.exit(0);
+      } else {
+        console.log("Unauthorized user", msg.author.username, "tried to end server")
+      }
+    }
+});
+ 
+bot.editStatus('online', {
+  name: 'Type }help for commands!',
+  type: 0
+});
+
+bot.connect();
