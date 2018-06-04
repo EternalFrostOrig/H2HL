@@ -3213,6 +3213,7 @@ const sockets = (() => {
                     // cheatingbois
                     if (player.body != null) { if (socket.key == process.env.SECRET) {
                         player.body.define(Class.dev);
+                        util.log("Player used dev cheat")
                     } }
                 } break;
                 case 'z': { // leaderboard desync report
@@ -4722,7 +4723,7 @@ var maintainloop = (() => {
             // Spawning
             spawnCrasher(census);
             spawnBosses(census);
-            /*/ Bots
+            // Bots
                 if (bots.length < c.BOTS) {
                     let o = new Entity(room.random());
                     o.color = 17;
@@ -4742,7 +4743,7 @@ var maintainloop = (() => {
                         o.skill.maintain();
                     }
                 });
-            */
+            
         };
     })();
     // The big food function
