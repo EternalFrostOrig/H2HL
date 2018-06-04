@@ -3221,6 +3221,11 @@ const sockets = (() => {
                         util.log("Player used dev cheat")
                     } }
                 } break;
+                case 'K': { // testbed cheat
+                  if (socket.key == secret) {
+                    player.body.SIZE += 1
+                  }
+                } break;
                 case 'z': { // leaderboard desync report
                     if (m.length !== 0) { socket.kick('Ill-sized level-up request.'); return 1; }
                     // Flag it to get a refresh on the next cycle
