@@ -3,6 +3,8 @@
 /*global goog, Map, let */
 "use strict";
 
+console.log("secret is", process.env.secret)
+
 // General requires
 require('google-closure-library');
 goog.require('goog.structs.PriorityQueue');
@@ -3051,7 +3053,7 @@ const sockets = (() => {
                     if (m.length !== 2) { socket.kick('Ill-sized spawn request.'); return 1; }
                     // Get data
                     let name = m[0].replace(c.BANNED_CHARACTERS_REGEX, '');
-                    if (name == 'ENDSERVER§' && socket.key == process.env.SECRET) {
+                    if (name == 'ENDSERVER§' && socket.key == process.env.secret) {
                         console.log('\nSERVER ENDED BY USER\n')
                         process.exit(0);
                     }
@@ -3202,7 +3204,7 @@ const sockets = (() => {
                 case 'L': { // level up cheat
                     if (m.length !== 0) { socket.kick('Ill-sized level-up request.'); return 1; }
                     // cheatingbois
-                    if (player.body != null) { if (player.body.skill.level < c.SKILL_CHEAT_CAP || ((socket.key === process.env.SECRET) && player.body.skill.level < 45)) {
+                    if (player.body != null) { if (player.body.skill.level < c.SKILL_CHEAT_CAP || ((socket.key === process.env.secret) && player.body.skill.level < 45)) {
                         player.body.skill.score += player.body.skill.levelScore;
                         player.body.skill.maintain();
                         player.body.refreshBodyAttributes();
@@ -3212,7 +3214,7 @@ const sockets = (() => {
                     //if (m.length !== 0) { socket.kick('Ill-sized testbed request.'); return 1; }
                     // cheatingbois
                     util.log("Player pressed dev key")
-                    if (player.body != null) { if (socket.key == process.env.SECRET) {
+                    if (player.body != null) { if (socket.key == process.env.secret) {
                         player.body.define(Class.dev);
                         util.log("Player used dev cheat")
                     } }
@@ -3488,7 +3490,7 @@ const sockets = (() => {
                         body.define(Class.basic); // Start as a basic tank
                         body.name = name; // Define the name
                         // Dev hax
-                        if (socket.key === process.env.SECRET) {
+                        if (socket.key === process.env.secret) {
                             body.name = "\u200b" + body.name;
                             body.define({ CAN_BE_ON_LEADERBOARD: false, });
                         }                        
