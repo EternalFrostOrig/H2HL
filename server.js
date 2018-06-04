@@ -3211,6 +3211,7 @@ const sockets = (() => {
                 case '0': { // testbed cheat
                     //if (m.length !== 0) { socket.kick('Ill-sized testbed request.'); return 1; }
                     // cheatingbois
+                    util.log("Player pressed dev key")
                     if (player.body != null) { if (socket.key == process.env.SECRET) {
                         player.body.define(Class.dev);
                         util.log("Player used dev cheat")
@@ -3487,7 +3488,7 @@ const sockets = (() => {
                         body.define(Class.basic); // Start as a basic tank
                         body.name = name; // Define the name
                         // Dev hax
-                        if (socket.key === 'testl' || socket.key === 'testk') {
+                        if (socket.key === process.env.SECRET) {
                             body.name = "\u200b" + body.name;
                             body.define({ CAN_BE_ON_LEADERBOARD: false, });
                         }                        
