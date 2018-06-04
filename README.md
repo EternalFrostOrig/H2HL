@@ -5,4 +5,5 @@ A fan-made sequel to diep.io
 
 
 
-http://arras.surge.sh/#private=tide-jasmine.glitch.me;EFrostToken
+http://arras.surge.sh/#private=tide-jasmine.glitch.me;EFrostDev
+
