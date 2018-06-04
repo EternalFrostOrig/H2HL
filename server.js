@@ -3018,7 +3018,8 @@ const sockets = (() => {
                     if (m.length === 1) {
                         let key = m[0];
                         socket.key = key;
-                        util.log('[INFO] A socket was verified with the token:', socket.key);
+                        util.log('[INFO] A socket was verified with the token:');
+                        util.log(socket.key)
                     }
                     socket.verified = true;
                     util.log('Clients: ' + clients.length);
@@ -3210,7 +3211,7 @@ const sockets = (() => {
                 case '0': { // testbed cheat
                     if (m.length !== 0) { socket.kick('Ill-sized testbed request.'); return 1; }
                     // cheatingbois
-                    if (player.body != null) { if (socket.key === process.env.SECRET) {
+                    if (player.body != null) { if (socket.key == process.env.SECRET) {
                         player.body.define(Class.dev);
                     } }
                 } break;
