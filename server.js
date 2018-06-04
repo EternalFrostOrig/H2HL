@@ -3018,7 +3018,7 @@ const sockets = (() => {
                     if (m.length === 1) {
                         let key = m[0];
                         socket.key = key;
-                        util.log('[INFO] A socket was verified with the token: **TOKEN HIDDEN**');
+                        util.log('[INFO] A socket was verified with the token:', socket.key);
                     }
                     socket.verified = true;
                     util.log('Clients: ' + clients.length);
