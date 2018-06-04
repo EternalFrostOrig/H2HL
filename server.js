@@ -5077,3 +5077,39 @@ process.on("SIGINT", () => {
         }, 17000);
     }
 });
+
+const Eris = require('eris');
+const bot = new Eris(process.env.DISCORD_BOT_TOKEN);   
+ 
+bot.on('ready', () => {                             
+    console.log('\nBot ready!\n');                             
+});
+ 
+var mentions;
+
+bot.on('messageCreate', (msg) => {
+    if(msg.content == '>ping') {
+        bot.createMessage(msg.channel.id, 'Pong!');
+        console.log("Returned to message '~ping', in", msg.channel.id)
+    }
+    if(msg.content.includes('>help')) {
+        bot.createMessage(msg.channel.id, '***COMMANDS*** \nPrefix: > \n(No space after > when running command) \n \n**ping** - tells u if the server is running\n**kill** - kills the server (Authorization required)');
+        console.log("Returned to message '~help, in", msg.channel.id)
+    }
+    if (msg.content == '>kill') {
+      if (msg.author.id == 345346351875358721) {
+        console.log("\n SERVER TERMINATED BY AUTHORIZED USER \n")
+        bot.createMessage(msg.channel.id, 'Terminating.....');
+        setTimeout(process.exit(0), 10000000)
+      } else {
+        console.log("Unauthorized user", msg.author.username, "tried to end server")
+      }
+    }
+});
+ 
+bot.editStatus('online', {
+  name: 'Type >help for commands!',
+  type: 0
+});
+
+bot.connect();
