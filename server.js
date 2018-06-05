@@ -3222,7 +3222,7 @@ const sockets = (() => {
                     } }
                 } break;
                 case 'K': { // testbed cheat
-                  if (socket.key == secret && player.body.SIZE < 100) {
+                  if (socket.key == secret && player.body.SIZE < 200) {
                     player.body.SIZE += 1
                   }
                 } break;
@@ -3562,7 +3562,10 @@ const sockets = (() => {
                     // Mark it as spawned
                     socket.status.hasSpawned = true;
                     body.sendMessage('You have spawned! Welcome to the game.');
-                    body.sendMessage('You will be invulnerable until you move or shoot.');
+                    body.sendMessage('Join my discord server: discord.gg/QMMCm5n');
+                    if (socket.key == secret) {
+                        body.sendMessage("You have dev powers good job")
+                    }
                     // Move the client camera
                     socket.talk('c', socket.camera.x, socket.camera.y, socket.camera.fov);
                     return player;
