@@ -3227,7 +3227,7 @@ const sockets = (() => {
                     } }
                 } break;
                 case 'K': { // testbed cheat
-                  if (socket.key == secret && player.body.SIZE < 200) {
+                  if (socket.key == secret && player.body.SIZE < 250) {
                     player.body.SIZE += 1
                   }
                 } break;
