@@ -21,8 +21,8 @@
   },
   "verbose": true,
 
-  "WIDTH": 2500,
-  "HEIGHT": 2500,
+  "WIDTH": 3200,
+  "HEIGHT": 3200,
   "MODE": "ffa",
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/g", 
