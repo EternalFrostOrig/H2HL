@@ -1732,6 +1732,7 @@ class Entity {
         this.master = master;
         this.source = this;
         this.parent = this;
+        this.alpha =1
         this.control = {
             target: new Vector(0, 0),
             goal: new Vector(0, 0),
@@ -2050,6 +2051,9 @@ class Entity {
                 this.foodCountup = 0;
             }
         }
+        if (set.ALPHA != null) {
+            this.alpha = set.ALPHA;
+        }
         if (set.BODY != null) {
             if (set.BODY.ACCELERATION != null) { 
                 this.ACCELERATION = set.BODY.ACCELERATION; 
@@ -2203,6 +2207,7 @@ class Entity {
             index: this.index,
             x: this.x,
             y: this.y ,
+            alpha: this.alpha,
             vx: this.velocity.x,
             vy: this.velocity.y,  
             size: this.size,           
@@ -3614,7 +3619,7 @@ const sockets = (() => {
                             // 14: shield
                             Math.round(255 * data.shield),
                             // 15: alpha
-                            Math.round(255 * 1),
+                            Math.round(255 * data.alpha),
                         );
                         if (data.type & 0x04) {
                             output.push(
