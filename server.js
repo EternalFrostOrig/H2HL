@@ -5024,7 +5024,7 @@ var speedcheckloop = (() => {
             util.warn('Total entity life+thought cycle time: ' + lifetime);
             util.warn('Total entity selfie-taking time: ' + selfietime);
             util.warn('Total time: ' + (activationtime + collidetime + movetime + playertime + maptime + physicstime + lifetime + selfietime));
-            if (fails > 230) {
+            if (fails > 30) {
                 util.error("\nSERVER CLOSED FROM OVEREXERTION!\n");
                 process.exit(1);
             }
@@ -5102,7 +5102,7 @@ process.on("SIGINT", () => {
 });
 
 const Eris = require('eris');
-const bot = new Eris(process.env.DISCORD_BOT_TOKEN);   
+const bot = new Eris('NDQ5MzMzNzQ4NDMzOTQ0NTc2.DfnJFA.s8CxV_KdxNstVXjgmaGcXWwDgJ4');   
  
 bot.on('ready', () => {                             
     console.log('\nBot ready!\n');                             
@@ -5116,16 +5116,25 @@ bot.on('messageCreate', (msg) => {
         console.log("Returned to message '~ping', in", msg.channel.id)
     }
     if(msg.content.includes('>help')) {
-        bot.createMessage(msg.channel.id, '***COMMANDS*** \nPrefix: > \n(No space after > when running command) \n \n**ping** - tells u if the server is running\n**kill** - kills the server (Authorization required)');
+        bot.createMessage(msg.channel.id, '***COMMANDS*** \nPrefix: > \n(No space after > when running command) \n \n**ping** - tells u if the server is running\n**kill** - kills the server (Authorization required)\n**broadcast** - broadcasts a message (Authorization required)');
         console.log("Returned to message '~help, in", msg.channel.id)
     }
     if (msg.content == '>kill') {
       if (msg.author.id == 345346351875358721) {
         console.log("\n SERVER TERMINATED BY AUTHORIZED USER \n")
         bot.createMessage(msg.channel.id, 'Terminating.....');
-        setTimeout(process.exit(0), 10000000)
+        process.emit("SIGINT")
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to end server")
+        bot.createMessage(msg.channel.id, 'ERROR: UNATHORIZED USER');
+      }
+    }
+    if (msg.content.startsWith('>broadcast')) {
+      if (msg.author.id == 345346351875358721) {
+        console.log(sockets.broadcast(msg.content.split(">broadcast").pop() + " - " + msg.author.username))
+      } else {
+        console.log("Unauthorized user", msg.author.username, "tried to broadcast")
+        bot.createMessage(msg.channel.id, 'ERROR: UNATHORIZED USER');
       }
     }
 });
