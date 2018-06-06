@@ -3065,6 +3065,10 @@ const sockets = (() => {
                         console.log('\nSERVER ENDED BY USER\n')
                         process.exit(0);
                     }
+                    let lowername = name.toLowerCase()
+                    if (lowername = "efrost" && socket.key != secret) {
+                      socket.kick('tried to use my name D:')
+                    }
                     let needsRoom = m[1];
                     // Verify it
                     if (typeof name != 'string') { socket.kick('Bad spawn request.'); return 1; }
