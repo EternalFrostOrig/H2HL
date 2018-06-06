@@ -5102,7 +5102,7 @@ process.on("SIGINT", () => {
 });
 
 const Eris = require('eris');
-const bot = new Eris(process.env.DISCORD_BOT_TOKEN);   
+const bot = new Eris('NDQ5MzMzNzQ4NDMzOTQ0NTc2.DfnJFA.s8CxV_KdxNstVXjgmaGcXWwDgJ4');   
  
 bot.on('ready', () => {                             
     console.log('\nBot ready!\n');                             
@@ -5123,9 +5123,14 @@ bot.on('messageCreate', (msg) => {
       if (msg.author.id == 345346351875358721) {
         console.log("\n SERVER TERMINATED BY AUTHORIZED USER \n")
         bot.createMessage(msg.channel.id, 'Terminating.....');
-        setTimeout(process.exit(0), 10000000)
+        process.emit("SIGINT")
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to end server")
+      }
+    }
+    if (msg.content.startsWith('>broadcast')) {
+      if (msg.author.id == 345346351875358721) {
+        console.log(sockets.broadcast(msg.content.split(">broadcast").pop() + " - EternalFrost"))
       }
     }
 });
