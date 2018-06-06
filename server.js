@@ -5126,11 +5126,15 @@ bot.on('messageCreate', (msg) => {
         process.emit("SIGINT")
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to end server")
+        bot.createMessage(msg.channel.id, 'ERROR: UNATHORIZED USER');
       }
     }
     if (msg.content.startsWith('>broadcast')) {
       if (msg.author.id == 345346351875358721) {
-        console.log(sockets.broadcast(msg.content.split(">broadcast").pop() + " - EternalFrost"))
+        console.log(sockets.broadcast(msg.content.split(">broadcast").pop() + " - " + msg.author.username))
+      } else {
+        console.log("Unauthorized user", msg.author.username, "tried to broadcast")
+        bot.createMessage(msg.channel.id, 'ERROR: UNATHORIZED USER');
       }
     }
 });
