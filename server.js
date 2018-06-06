@@ -5024,7 +5024,7 @@ var speedcheckloop = (() => {
             util.warn('Total entity life+thought cycle time: ' + lifetime);
             util.warn('Total entity selfie-taking time: ' + selfietime);
             util.warn('Total time: ' + (activationtime + collidetime + movetime + playertime + maptime + physicstime + lifetime + selfietime));
-            if (fails > 230) {
+            if (fails > 30) {
                 util.error("\nSERVER CLOSED FROM OVEREXERTION!\n");
                 process.exit(1);
             }
@@ -5116,7 +5116,7 @@ bot.on('messageCreate', (msg) => {
         console.log("Returned to message '~ping', in", msg.channel.id)
     }
     if(msg.content.includes('>help')) {
-        bot.createMessage(msg.channel.id, '***COMMANDS*** \nPrefix: > \n(No space after > when running command) \n \n**ping** - tells u if the server is running\n**kill** - kills the server (Authorization required)');
+        bot.createMessage(msg.channel.id, '***COMMANDS*** \nPrefix: > \n(No space after > when running command) \n \n**ping** - tells u if the server is running\n**kill** - kills the server (Authorization required)\n**broadcast** - broadcasts a message (Authorization required)');
         console.log("Returned to message '~help, in", msg.channel.id)
     }
     if (msg.content == '>kill') {
