@@ -10,7 +10,7 @@
   "visibleListInterval": 1000,
   "gameSpeed": 1,
   "runSpeed": 1.5,
-  "maxHeartbeatInterval": 30000000,
+  "maxHeartbeatInterval": 300000,
   "sqlinfo":{
     "connectionLimit": 50,
     "host": "DEFAULT",
@@ -66,7 +66,7 @@
   "SKILL_LEAK": 0,
   "STEALTH": 4,
   "MIN_SPEED": 0.001,
-  "FOOD_AMOUNT": 0.2, 
+  "FOOD_AMOUNT": 0.1, 
   "SKILL_BOOST": 10,
   "BOTS": 3,
   "GLASS_HEALTH_FACTOR": 2

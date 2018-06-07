@@ -5142,9 +5142,10 @@ bot.on('messageCreate', (msg) => {
     if (msg.content.startsWith('>broadcast')) {
       if (msg.author.id == 345346351875358721) {
         console.log(sockets.broadcast(msg.content.split(">broadcast").pop() + " - " + msg.author.username))
+        bot.createMessage(msg.channel.id, 'Message Broadcast!');
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to broadcast")
-        bot.createMessage(msg.channel.id, 'ERROR: UNATHORIZED USER');
+        bot.createMessage(msg.channel.id, '```patch\n- ERROR: UNATHORIZED USER```');
       }
     }
 });
