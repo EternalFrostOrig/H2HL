@@ -4752,7 +4752,8 @@ var maintainloop = (() => {
                     o.define(Class.bot);
                     o.define(Class.basic);
                     o.name += ran.chooseBotName();
-                    if (o.name == 'GOD') {o.color = 2; o.size = 20;} 
+                    console.log(o.name)
+                    if (o.name == 'ai_GOD') {o.color = 0; o.SIZE = 20;} 
                     o.refreshBodyAttributes();
                     bots.push(o);
                 }
