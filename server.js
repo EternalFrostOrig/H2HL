@@ -4373,11 +4373,12 @@ var gameloop = (() => {
 
                         /********** DO DAMAGE *********/
                         let bail = false;
+                        try {
                         if (my.shape === n.shape && my.settings.isNecromancer && n.type === 'food') {
                             bail = my.necro(n);
                         } else if (my.shape === n.shape && n.settings.isNecromancer && my.type === 'food') {
                             bail = n.necro(my);
-                        } 
+                        } } catch(err) {console.log(err)}
                         if (!bail) {
                             // Calculate base damage
                             let resistDiff = my.health.resist - n.health.resist,
