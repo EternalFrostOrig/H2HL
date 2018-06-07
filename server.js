@@ -4757,11 +4757,12 @@ var maintainloop = (() => {
                     let o = new Entity(room.random());
                     o.color = 17;
                     o.define(Class.bot);
-                    console.log(randomTank())
-                    o.define(eval(randomTank()));
+                    let tank = randomTank()
+                    console.log(tank)
+                    o.define(eval(tank));
                     o.name += ran.chooseBotName();
                     console.log(o.name)
-                    if (o.name == 'ai_GOD') {o.color = 0; o.SIZE = 20;} 
+                    if (o.name == 'ai_GOD') {o.color = 0; o.SIZE = 20; o.DAMAGE_CLASS = 3;} 
                     o.refreshBodyAttributes();
                     bots.push(o);
                 }
