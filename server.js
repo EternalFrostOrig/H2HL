@@ -4762,7 +4762,7 @@ var maintainloop = (() => {
                     o.define(eval(tank));
                     o.name += ran.chooseBotName();
                     console.log(o.name)
-                    if (o.name == 'ai_GOD') {o.color = 0; o.SIZE = 20; o.DAMAGE_CLASS = 3;} 
+                    if (o.name == 'ai_GOD') {o.color = 0; o.SIZE = 20; o.DAMAGE_CLASS = 3; o.DAMAGE = 2;} 
                     o.refreshBodyAttributes();
                     bots.push(o);
                 }
