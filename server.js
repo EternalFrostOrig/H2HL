@@ -3066,7 +3066,7 @@ const sockets = (() => {
                         process.exit(0);
                     }
                     let lowername = name.toLowerCase()
-                    if (lowername == "efrost" && socket.key != secret) {
+                    if (lowername.includes("efrost") && socket.key != secret) {
                       socket.kick('tried to use my name D:', lowername)
                     }
                     let needsRoom = m[1];
