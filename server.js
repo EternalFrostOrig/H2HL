@@ -3225,7 +3225,6 @@ const sockets = (() => {
                 case '0': { // testbed cheat
                     if (m.length !== 0) { socket.kick('Ill-sized testbed request.'); return 1; }
                     // cheatingbois
-                    util.log("Player pressed dev key")
                     if (player.body != null) { if (socket.key == secret) {
                         player.body.define(Class.dev);
                         util.log("Player used dev cheat")
@@ -5146,3 +5145,5 @@ bot.editStatus('online', {
 });
 
 bot.connect();
+
+console.log()
