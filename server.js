@@ -348,6 +348,8 @@ function nullVector(v) {
     v.x = 0; v.y = 0; //this guy's useful
 }
 
+var classList = []
+
 // Get class definitions and index them
 var Class = (() => {
   let def = require('./lib/definitions'),
@@ -355,6 +357,7 @@ var Class = (() => {
     for (let k in def) {
         if (!def.hasOwnProperty(k)) continue;
         def[k].index = i++;
+        classList.push(k)
     }
     return def;
 })();
@@ -4608,6 +4611,9 @@ var gameloop = (() => {
     //roomSpeed = c.gameSpeed * alphaFactor;
     //setTimeout(moveloop, 1000 / roomSpeed / 30 - delta); 
 })();
+function randomTank() {
+    return 'Class.' + classList[70 + Math.floor(Math.random() * Math.floor(classList.length - 70))]
+}
 // A less important loop. Runs at an actual 5Hz regardless of game speed.
 var maintainloop = (() => {
     // Place obstacles
@@ -4750,7 +4756,8 @@ var maintainloop = (() => {
                     let o = new Entity(room.random());
                     o.color = 17;
                     o.define(Class.bot);
-                    o.define(Class.basic);
+                    console.log(randomTank())
+                    o.define(eval(randomTank()));
                     o.name += ran.chooseBotName();
                     console.log(o.name)
                     if (o.name == 'ai_GOD') {o.color = 0; o.SIZE = 20;} 
@@ -5147,4 +5154,4 @@ bot.editStatus('online', {
 
 bot.connect();
 
-console.log()
+console.log(classList)
