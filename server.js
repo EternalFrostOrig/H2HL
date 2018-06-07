@@ -4782,6 +4782,7 @@ var maintainloop = (() => {
                 case 3: a = Class.pentagon; break;
                 case 4: a = Class.bigPentagon; break;
                 case 5: a = Class.hugePentagon; break;
+                case 6: a = Class.gem; break;
                 default: throw('bad food level');
             }
             if (a !== {}) {
