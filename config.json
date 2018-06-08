@@ -20,9 +20,8 @@
     "debug": false
   },
   "verbose": true,
-
-  "WIDTH": 3200,
-  "HEIGHT": 3200,
+  "WIDTH": 4000,
+  "HEIGHT": 4000,
   "MODE": "ffa",
   "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/g", 
@@ -68,7 +67,7 @@
   "MIN_SPEED": 0.001,
   "FOOD_AMOUNT": 0.1, 
   "SKILL_BOOST": 10,
-  "BOTS": 0,
+  "BOTS": 3,
   "GLASS_HEALTH_FACTOR": 1.7,
   "MAX_SIZE": 300
 }
