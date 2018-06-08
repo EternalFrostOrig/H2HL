@@ -4758,11 +4758,10 @@ var maintainloop = (() => {
                     o.color = 17;
                     o.define(Class.bot);
                     let tank = randomTank()
-                    console.log(tank)
                     o.define(eval(tank));
                     o.name += ran.chooseBotName();
-                    console.log(o.name)
                     if (o.name == 'ai_GOD') {o.color = 0; o.SIZE = 20; o.DAMAGE_CLASS = 3; o.DAMAGE = 2;} 
+                    console.log("Bot", o.name, "is type", tank)
                     o.refreshBodyAttributes();
                     bots.push(o);
                 }
@@ -5156,5 +5155,3 @@ bot.editStatus('online', {
 });
 
 bot.connect();
-
-console.log(classList)
