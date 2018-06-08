@@ -2197,7 +2197,7 @@ class Entity {
     }
 
     get realSize() {
-        return this.size * ((Math.abs(this.shape) > lazyRealSizes.length) ? 1 : lazyRealSizes[Math.abs(this.shape)]);
+        return this.size * ((Math.abs(this.shape) >= lazyRealSizes.length) ? 1 : lazyRealSizes[Math.abs(this.shape)]);
     }
 
     get m_x() {
