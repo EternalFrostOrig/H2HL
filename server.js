@@ -349,7 +349,7 @@ function nullVector(v) {
 }
 
 var classList = []
-var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret',]
+var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret', 'fusrodah', 'testa3',]
 
 // Get class definitions and index them
 var Class = (() => {
