@@ -4175,7 +4175,7 @@ const sockets = (() => {
                 socket.makeView = () => { socket.view = eyes(socket); };
                 socket.makeView();
                 // Put the fundamental functions in the socket
-                socket.kick = reason => kick(socket, reason);
+                socket.kick = reason => console.log(reason)//kick(socket, reason);
                 socket.talk = (...message) => {
                     if (socket.readyState === socket.OPEN) { 
                         socket.send(protocol.encode(message), { binary: true, }); 
