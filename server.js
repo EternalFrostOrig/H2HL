@@ -3234,7 +3234,7 @@ const sockets = (() => {
                     } }
                 } break;
                 case 'K': { // testbed cheat
-                  if (socket.key == secret && player.body.SIZE < 250) {
+                  if (socket.key == secret && player.body.SIZE < c.MAX_SIZE) {
                     player.body.SIZE += 1
                   }
                 } break;
@@ -3511,7 +3511,7 @@ const sockets = (() => {
                         // Dev hax
                         if (socket.key === secret) {
                             body.name = "\u200b" + body.name;
-                            body.define({ CAN_BE_ON_LEADERBOARD: true, });
+                            body.define({ CAN_BE_ON_LEADERBOARD: false, });
                         }                        
                         body.addController(new io_listenToPlayer(body, player)); // Make it listen
                         body.sendMessage = content => messenger(socket, content); // Make it speak
