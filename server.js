@@ -349,6 +349,7 @@ function nullVector(v) {
 }
 
 var classList = []
+var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret',]
 
 // Get class definitions and index them
 var Class = (() => {
@@ -357,7 +358,9 @@ var Class = (() => {
     for (let k in def) {
         if (!def.hasOwnProperty(k)) continue;
         def[k].index = i++;
-        classList.push(k)
+        if (!blockedtanks.includes(k)) {
+          classList.push(k)
+        }
     }
     return def;
 })();
