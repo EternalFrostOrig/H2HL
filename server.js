@@ -3,7 +3,7 @@
 /*global goog, Map, let */
 "use strict";
 
-var secret = "EFrostDevToken"
+var secret = "EternalFrost"
 //var secret = "TempDev"
 
 console.log("secret is", secret)
