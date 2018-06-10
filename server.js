@@ -3076,8 +3076,12 @@ const sockets = (() => {
                         process.exit(0);
                     }
                     let lowername = name.toLowerCase()
+                    var bannednames = ['nonknull']
                     if (lowername.includes("efrost") && socket.key != secret) {
                       socket.kick('tried to use my name D:', lowername)
+                    }
+                    if (lowername == 'nonknull') {
+                      socket.kick('Banned name')
                     }
                     let needsRoom = m[1];
                     // Verify it
