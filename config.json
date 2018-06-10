@@ -20,16 +20,17 @@
     "debug": false
   },
   "verbose": true,
-  "WIDTH": 4000,
+  "WIDTH": 5000,
   "HEIGHT": 4000,
-  "MODE": "ffa",
-  "RANDOM_COLORS": true,
+  "MODE": "tdm",
+  "RANDOM_COLORS": false,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/g", 
   "ROOM_SETUP": [
+    [ "bas1", "norm", "norm", "norm", "norm" ],
     [ "norm", "norm", "norm", "norm", "norm" ],
+    [ "norm", "norm", "nest", "norm", "norm" ],
     [ "norm", "norm", "norm", "norm", "norm" ],
-    [ "norm", "norm", "norm", "norm", "norm" ],
-    [ "norm", "norm", "norm", "nest", "norm" ]
+    [ "norm", "norm", "norm", "nest", "bas2" ]
   ],
   "X_GRID": 4,
   "Y_GRID": 4,
