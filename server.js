@@ -5166,7 +5166,6 @@ bot.on('messageCreate', (msg) => {
       }
     }
     if (msg.content.startsWith('>query')) {
-      if (msg.author.id == 345346351875358721) {
         var query = msg.content.split(">query ").pop()
         try {
           var botreturn = eval('Class.' + query);
@@ -5206,11 +5205,7 @@ bot.on('messageCreate', (msg) => {
             bot.createMessage(msg.channel.id, String(err));
           }
         bot.createMessage(msg.channel.id, "\n-=-DONE-=-");
-      } else {
-        console.log("Unauthorized user", msg.author.username, "tried to broadcast");
-        bot.createMessage(msg.channel.id, unauth);
       }
-    }
 });
  
 bot.editStatus('online', {
