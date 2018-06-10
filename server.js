@@ -350,7 +350,7 @@ function nullVector(v) {
 
 var classList = []
 var mlist = []
-var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret', 'fusrodah', 'testa3',]
+var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret', 'fusrodah', 'testa3', 'mothership', 'laser5', '',]
 
 var deflist = require('./lib/definitions')
 
@@ -5192,7 +5192,15 @@ bot.on('messageCreate', (msg) => {
                           try {
                             bot.createMessage(msg.channel.id, "^ ^ " + String(key3) + ': ' + eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']' + '[' + String(key3) + ']'))
                           } catch(err) {
-                            bot.createMessage(msg.channel.id, "^ ^ " + String(key3) + ': ' + eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']' + '.' + String(key3)))
+                            try {
+                              bot.createMessage(msg.channel.id, "^ ^ " + String(key3) + ': ' + eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']' + '.' + String(key3)))
+                            } catch(err) {
+                              try {
+                                bot.createMessage(msg.channel.id, "^ ^ " + String(key3) + ': ' + eval('Class.' + query + '.' + String(key) + '.' + String(key2) + '[' + String(key3) + ']'))
+                              } catch(err) {
+                                bot.createMessage(msg.channel.id, "^ ^ " + String(key3) + ': ' + eval('Class.' + query + '.' + String(key) + '.' + String(key2) + '.' + String(key3)))
+                              }
+                            }
                           }
                         }
                       }
