@@ -349,7 +349,10 @@ function nullVector(v) {
 }
 
 var classList = []
+var mlist = []
 var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret', 'fusrodah', 'testa3',]
+
+var deflist = require('./lib/definitions')
 
 // Get class definitions and index them
 var Class = (() => {
@@ -358,6 +361,7 @@ var Class = (() => {
     for (let k in def) {
         if (!def.hasOwnProperty(k)) continue;
         def[k].index = i++;
+        mlist.push(k)
         if (!blockedtanks.includes(k)) {
           classList.push(k)
         }
@@ -5120,16 +5124,27 @@ bot.on('ready', () => {
     console.log('\nBot ready!\n');                             
 });
  
-var mentions;
+var unauth = '```patch\n- ERROR: UNATHORIZED USER```'
+var mliststring = ''
+var mliststring2 = ''
+mlist.forEach(function(element) {
+  if (mliststring.length < 1970) {
+    mliststring += element += ', ';
+  } else {
+    mliststring2 += element += ', '
+  }
+});
 
 bot.on('messageCreate', (msg) => {
-    if(msg.content == '>ping') {
+    if (msg.content == '>ping') {
         bot.createMessage(msg.channel.id, 'Pong!');
-        console.log("Returned to message '~ping', in", msg.channel.id)
     }
-    if(msg.content.includes('>help')) {
+    if (msg.content == '>list') {
+      bot.createMessage(msg.channel.id, mliststring);
+      bot.createMessage(msg.channel.id, mliststring2);
+    }
+    if (msg.content.includes('>help')) {
         bot.createMessage(msg.channel.id, '***COMMANDS*** \nPrefix: > \n(No space after > when running command) \n \n**ping** - tells u if the server is running\n**kill** - kills the server (Authorization required)\n**broadcast** - broadcasts a message (Authorization required)');
-        console.log("Returned to message '~help, in", msg.channel.id)
     }
     if (msg.content == '>kill') {
       if (msg.author.id == 345346351875358721) {
@@ -5138,7 +5153,7 @@ bot.on('messageCreate', (msg) => {
         process.emit("SIGINT")
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to end server")
-        bot.createMessage(msg.channel.id, 'ERROR: UNATHORIZED USER');
+        bot.createMessage(msg.channel.id, unauth);
       }
     }
     if (msg.content.startsWith('>broadcast')) {
@@ -5147,7 +5162,53 @@ bot.on('messageCreate', (msg) => {
         bot.createMessage(msg.channel.id, 'Message Broadcast!');
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to broadcast")
-        bot.createMessage(msg.channel.id, '```patch\n- ERROR: UNATHORIZED USER```');
+        bot.createMessage(msg.channel.id, unauth);
+      }
+    }
+    if (msg.content.startsWith('>query')) {
+      if (msg.author.id == 345346351875358721) {
+        var query = msg.content.split(">query ").pop()
+        try {
+          var botreturn = eval('Class.' + query);
+          for (var key in botreturn) {
+            bot.createMessage(msg.channel.id, String(key) + ': ' + eval('Class.' + query + '.' + String(key)))
+            var returned = typeof eval('Class.' + query + '.' + String(key))
+            if (returned == 'object') {
+              console.log("new tier2 obj")
+              for (var key2 in eval('Class.' + query + '.' + String(key))) {
+                  if (key2 != 'remove') {
+                    try {
+                      bot.createMessage(msg.channel.id, "^ " + String(key2) + ': ' + eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']'))
+                      var returned = typeof eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']')
+                      var returnedobj = eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']')
+                    } catch(err) {
+                      bot.createMessage(msg.channel.id, "^ " + String(key2) + ': ' + eval('Class.' + query + '.' + String(key) + '.' + String(key2)))
+                      var returned = typeof eval('Class.' + query + '.' + String(key) + '.' + String(key2))
+                      var returnedobj = eval('Class.' + query + '.' + String(key) + '.' + String(key2))
+                    }
+                    if (returned == 'object') {
+                      console.log("new teir3 obj", returnedobj)
+                      for (var key3 in returnedobj) {
+                        if (key3 != 'remove') {
+                          try {
+                            bot.createMessage(msg.channel.id, "^ ^ " + String(key3) + ': ' + eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']' + '[' + String(key3) + ']'))
+                          } catch(err) {
+                            bot.createMessage(msg.channel.id, "^ ^ " + String(key3) + ': ' + eval('Class.' + query + '.' + String(key) + '[' + String(key2) + ']' + '.' + String(key3)))
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } catch(err) {
+            bot.createMessage(msg.channel.id, String(err));
+          }
+        bot.createMessage(msg.channel.id, "\n-=-DONE-=-");
+      } else {
+        console.log("Unauthorized user", msg.author.username, "tried to broadcast");
+        bot.createMessage(msg.channel.id, unauth);
       }
     }
 });
