@@ -3080,8 +3080,10 @@ const sockets = (() => {
                     if (lowername.includes("efrost") && socket.key != secret) {
                       socket.kick('tried to use my name D:', lowername)
                     }
-                    if (lowername == 'nonknull') {
-                      socket.kick('Banned name')
+                    for (var uname in bannednames) {
+                      if (lowername == uname) {
+                        socket.kick('Banned name')
+                      }
                     }
                     let needsRoom = m[1];
                     // Verify it
