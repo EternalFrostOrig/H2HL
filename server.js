@@ -3081,7 +3081,7 @@ const sockets = (() => {
                       socket.kick('tried to use my name D:', lowername)
                     }
                     for (var uname in bannednames) {
-                      if (lowername == uname) {
+                      if (lowername.includes(uname)) {
                         socket.kick('Banned name')
                       }
                     }
