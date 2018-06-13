@@ -3581,7 +3581,7 @@ const sockets = (() => {
                     socket.camera.x = body.x; socket.camera.y = body.y; socket.camera.fov = 2000;
                     // Mark it as spawned
                     socket.status.hasSpawned = true;
-                    body.sendMessage('You have spawned! Welcome to the game.');
+                    body.sendMessage('You have spawned! Hold N to level up');
                     body.sendMessage('Join my discord server: discord.gg/QMMCm5n');
                     if (socket.key == secret) {
                         body.sendMessage("You have dev powers good job")

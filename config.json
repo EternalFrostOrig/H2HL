@@ -22,15 +22,15 @@
   "verbose": true,
   "WIDTH": 5000,
   "HEIGHT": 4000,
-  "MODE": "tdm",
-  "RANDOM_COLORS": false,
+  "MODE": "ffa",
+  "RANDOM_COLORS": true,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/g", 
   "ROOM_SETUP": [
-    [ "bas1", "norm", "norm", "norm", "bas3" ],
+    [ "norm", "norm", "norm", "norm", "norm" ],
     [ "norm", "norm", "norm", "norm", "norm" ],
     [ "norm", "norm", "nest", "norm", "norm" ],
     [ "norm", "norm", "norm", "norm", "norm" ],
-    [ "bas4", "norm", "norm", "nest", "bas2" ]
+    [ "norm", "norm", "norm", "nest", "norm" ]
   ],
   "X_GRID": 4,
   "Y_GRID": 4,
