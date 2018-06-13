@@ -4802,8 +4802,12 @@ var maintainloop = (() => {
                 case 6: a = Class.gem; break;
                 default: throw('bad food level');
             }
-            if (a !== {}) {
-                a.BODY.ACCELERATION = 0.015 / (a.FOOD.LEVEL + 1);
+            try {
+              if (a !== {}) {
+                  a.BODY.ACCELERATION = 0.015 / (a.FOOD.LEVEL + 1);
+              }
+            } catch(err) {
+              //do nothing
             }
             return a;
         }
