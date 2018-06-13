@@ -20,8 +20,8 @@
     "debug": false
   },
   "verbose": true,
-  "WIDTH": 5000,
-  "HEIGHT": 4000,
+  "WIDTH": 5200,
+  "HEIGHT": 5200,
   "MODE": "ffa",
   "RANDOM_COLORS": true,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/g", 
@@ -44,7 +44,7 @@
     0.15,
     0.015,
     0.01,
-    0
+    0.1
   ],
   "FOOD_NEST": [
     0, 
@@ -53,7 +53,7 @@
     0.75,
     0.23,
     0.02,
-    0
+    0.1
   ],
   "MAX_SKILL": 45,
   "SOFT_MAX_SKILL": 0.59,
