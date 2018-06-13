@@ -350,7 +350,7 @@ function nullVector(v) {
 
 var classList = []
 var mlist = []
-var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret', 'fusrodah', 'testa3', 'mothership', 'laser5', '',]
+var blockedtanks = ['testbed', 'testbed2', 'testbed3', 'testbed4', 'testbed5', 'testbed6', 'testbed7', 'testbed8', 'testbed9', 'dev', 'dev2', 'qtrap', 'baseProtector', 'baseGunTurret', 'baseSwarmTurret', 'fusrodah', 'testa3', 'mothership', 'laser5', 'rockshooter',]
 
 var deflist = require('./lib/definitions')
 
