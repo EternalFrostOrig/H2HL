@@ -4815,7 +4815,7 @@ var maintainloop = (() => {
                   a.BODY.ACCELERATION = 0.015 / (a.FOOD.LEVEL + 1);
               }
             } catch(err) {
-              console.log("Acceleration bug was triggered")
+              console.log("Acceleration bug was triggered", a)
             }
             return a;
         }
