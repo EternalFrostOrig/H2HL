@@ -1655,6 +1655,11 @@ var bringToLife = (() => {
         my.guns.forEach(gun => gun.live());
         my.turrets.forEach(turret => turret.life());
         if (my.skill.maintain()) my.refreshBodyAttributes();
+        if (my.invisible[1]) {
+          my.alpha = Math.max(0.02, my.alpha - my.invisible[1]);
+          if (!(my.velocity.x * my.velocity.x + my.velocity.y * my.velocity.y < 0.15 * 0.15) || my.damageRecieved)
+            my.alpha = Math.min(1, my.alpha + my.invisible[0]);
+        }
     }; 
 })();
 
@@ -2060,6 +2065,10 @@ class Entity {
         if (set.ALPHA != null) {
             this.alpha = set.ALPHA;
         }
+        if (set.INVISIBLE != null) this.invisible = [
+          set.INVISIBLE[0],
+          set.INVISIBLE[1]
+        ];
         if (set.BODY != null) {
             if (set.BODY.ACCELERATION != null) { 
                 this.ACCELERATION = set.BODY.ACCELERATION; 
