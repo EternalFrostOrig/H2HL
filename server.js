@@ -1210,7 +1210,6 @@ class Skill {
     let string = '';
     if (roundvalue > 0) { string += '+' + roundvalue + '%'; }
     if (roundvalue < 0) { string += '-' + roundvalue + '%'; }
-
     return string;
     */
 
