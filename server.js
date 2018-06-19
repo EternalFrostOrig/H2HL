@@ -4507,10 +4507,10 @@ var gameloop = (() => {
                                 _n: c.KNOCKBACK_CONSTANT * n.pushability / n.mass * deathFactor._me,
                             };
                         // Apply impulse as force
-                        my.accel.x += modifiers._me * force.x;
-                        my.accel.y += modifiers._me * force.y;
-                        n.accel.x -= modifiers._n * force.x;
-                        n.accel.y -= modifiers._n * force.y;
+                        my.accel.x += modifiers._me * force.x
+                        my.accel.y += modifiers._me * force.y
+                        n.accel.x -= modifiers._n * force.x
+                        n.accel.y -= modifiers._n * force.y
                     }
                 }
             }
@@ -4646,7 +4646,9 @@ function randomTank() {
   if (botSpawn == undefined) {
     return 'Class.' + classList[70 + Math.floor(Math.random() * Math.floor(classList.length - 70))]
   } else {
-    return 'Class.' + botSpawn
+    var botSpawnTemp = botSpawn
+    botSpawn = undefined
+    return 'Class.' + botSpawnTemp
   }
 }
 // A less important loop. Runs at an actual 5Hz regardless of game speed.
@@ -5244,16 +5246,18 @@ bot.on('messageCreate', (msg) => {
           }
         bot.createMessage(msg.channel.id, "\n-=-DONE-=-");
       }
-    if (msg.content.startsWith('>summon ')) {
+    if (msg.content.startsWith('$summon ')) {
       if (msg.author.id == 345346351875358721) {
-        var spawnClass = msg.content.split(">summon ").pop()
+        var spawnClass = msg.content.split("$summon ").pop().substr(0, 3)
+        console.log(msg.content.split("$summon ").pop().substr(0, 3))
         var type = msg.content.split(" ").pop()
         if (spawnClass == 'bot') {
           botSpawn = type
+          bot.createMessage(msg.channel.id, "Next bot will be a " + type);
         } else if (spawnClass == 'food') {
           
         } else {
-          bot.createMessage(msg.channel.id, "Was unable to complete request, unknown summon type: " + spawnClass);
+          bot.createMessage(msg.channel.id, "Was unable to complete request, unknown summon type: " + spawnClass + "  |  " + GUID);
         }
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to broadcast")
