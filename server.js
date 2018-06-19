@@ -3,6 +3,19 @@
 /*global goog, Map, let */
 "use strict";
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+var GUID = guid()
+console.log(GUID)
+
+
+var botSpawn = undefined
 var secret = "EternalFrost"
 //var secret = "TempDev"
 
@@ -4630,7 +4643,11 @@ var gameloop = (() => {
     //setTimeout(moveloop, 1000 / roomSpeed / 30 - delta); 
 })();
 function randomTank() {
+  if (botSpawn == undefined) {
     return 'Class.' + classList[70 + Math.floor(Math.random() * Math.floor(classList.length - 70))]
+  } else {
+    return 'Class.' + botSpawn
+  }
 }
 // A less important loop. Runs at an actual 5Hz regardless of game speed.
 var maintainloop = (() => {
@@ -5042,7 +5059,7 @@ var speedcheckloop = (() => {
             active = logs.entities.count();
         global.fps = (1000/sum).toFixed(2);
         if (sum > 1000 / roomSpeed / 30) { 
-            //fails++;
+            fails++;
             util.warn('~~ LOOPS: ' + loops + '. ENTITY #: ' + entities.length + '//' + Math.round(active/loops) + '. VIEW #: ' + views.length + '. BACKLOGGED :: ' + (sum * roomSpeed * 3).toFixed(3) + '%! ~~');
             util.warn('Total activation time: ' + activationtime);
             util.warn('Total collision time: ' + collidetime);
@@ -5053,7 +5070,7 @@ var speedcheckloop = (() => {
             util.warn('Total entity life+thought cycle time: ' + lifetime);
             util.warn('Total entity selfie-taking time: ' + selfietime);
             util.warn('Total time: ' + (activationtime + collidetime + movetime + playertime + maptime + physicstime + lifetime + selfietime));
-            if (fails > 30) {
+            if (fails > 60) {
                 util.error("\nSERVER CLOSED FROM OVEREXERTION!\n");
                 process.exit(1);
             }
@@ -5150,7 +5167,7 @@ mlist.forEach(function(element) {
 
 bot.on('messageCreate', (msg) => {
     if (msg.content == '>ping') {
-        bot.createMessage(msg.channel.id, 'Pong!');
+        bot.createMessage(msg.channel.id, 'Pong! ' + GUID);
     }
     if (msg.content == '>list') {
       bot.createMessage(msg.channel.id, mliststring);
@@ -5227,6 +5244,22 @@ bot.on('messageCreate', (msg) => {
           }
         bot.createMessage(msg.channel.id, "\n-=-DONE-=-");
       }
+    if (msg.content.startsWith('>summon ')) {
+      if (msg.author.id == 345346351875358721) {
+        var spawnClass = msg.content.split(">summon ").pop()
+        var type = msg.content.split(" ").pop()
+        if (spawnClass == 'bot') {
+          botSpawn = type
+        } else if (spawnClass == 'food') {
+          
+        } else {
+          bot.createMessage(msg.channel.id, "Was unable to complete request, unknown summon type: " + spawnClass);
+        }
+      } else {
+        console.log("Unauthorized user", msg.author.username, "tried to broadcast")
+        bot.createMessage(msg.channel.id, unauth);
+      }
+    }
 });
  
 bot.editStatus('online', {
