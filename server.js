@@ -16,10 +16,6 @@ console.log(GUID)
 
 
 var botSpawn = undefined
-var secret = "EternalFrost"
-//var secret = "TempDev"
-
-console.log("secret is", secret)
 
 // General requires
 require('google-closure-library');
@@ -2991,6 +2987,8 @@ var http = require('http'),
     })();
 
 // Websocket behavior
+var secret = "EternalFrost"
+//var secret = "TempDev"
 const sockets = (() => {
     const protocol = require('./lib/fasttalk');
     let clients = [], players = [];
