@@ -5275,6 +5275,7 @@ bot.connect();
 
 if (Class.testbed8.UPGRADES_TIER_1) {
   var isRunningBossInstance = false
+  console.log(Class.testbed8.UPGRADES_TIER_1)
 } else {
   var isRunningBossInstance = true
 }
