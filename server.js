@@ -3022,6 +3022,7 @@ const sockets = (() => {
                 // Remove the socket
                 util.remove(clients, clients.indexOf(socket));        
                 util.log('[INFO] Socket closed. Views: ' + views.length + '. Clients: ' + clients.length + '.');
+                global.extPlayers = players.length
             }
             // Being kicked 
             function kick(socket, reason = 'No reason given.') {
@@ -3122,7 +3123,8 @@ const sockets = (() => {
                     // Start the update rhythm immediately
                     socket.update(0);  
                     // Log it    
-                    util.log('[INFO] ' + (m[0]) + (needsRoom ? ' joined' : ' rejoined') + ' the game! Players: ' + players.length);   
+                    util.log('[INFO] ' + (m[0]) + (needsRoom ? ' joined' : ' rejoined') + ' the game! Players: ' + players.length); 
+                    global.extPlayers = players.length
                 } break;
                 case 'S': { // clock syncing
                     if (m.length !== 1) { socket.kick('Ill-sized sync packet.'); return 1; }
@@ -4823,13 +4825,10 @@ var maintainloop = (() => {
                 case 5: a = Class.hugePentagon; break;
                 case 6: a = Class.gem; break;
                 default: throw('bad food level');
-            } try {
+            }
               if (a !== {}) {
                   a.BODY.ACCELERATION = 0.015 / (a.FOOD.LEVEL + 1);
-              }
-            } catch(err) {
-              console.log("Acceleration bug was triggered", a)
-            }
+            } 
             return a;
         }
         let placeNewFood = (position, scatter, level, allowInNest = false) => {
@@ -5162,14 +5161,10 @@ mlist.forEach(function(element) {
   }
 });
 
-var websocketamount = 0
+
 bot.on('messageCreate', (msg) => {
     if (msg.content == '>ping') {
-      for (var websocket in websockets) {
-        websocketamount++
-      }
-      bot.createMessage(msg.channel.id, 'Pong!\n' + "Has bosses: " + String(isRunningBossInstance) + "\nConnections amount: " + websocketamount);
-      websocketamount = 0
+      bot.createMessage(msg.channel.id, 'Pong!\n' + "Has bosses: " + String(isRunningBossInstance) + "\nConnections amount: " + global.extPlayers + "\nRunning on glitch: " + process.env.ISONGLITCH);
     }
     if (msg.content == '>list') {
       bot.createMessage(msg.channel.id, mliststring);
