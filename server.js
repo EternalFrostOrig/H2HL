@@ -5273,9 +5273,8 @@ bot.editStatus('online', {
 
 bot.connect();
 
-if (Class.testbed8.UPGRADES_TIER_1) {
+if (Class.testbed8.UPGRADES_TIER_1.length == 0) {
   var isRunningBossInstance = false
-  console.log(Class.testbed8.UPGRADES_TIER_1)
 } else {
   var isRunningBossInstance = true
 }
