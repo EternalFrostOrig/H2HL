@@ -11,9 +11,6 @@ function guid() {
   }
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
-var GUID = guid()
-console.log(GUID)
-
 
 var botSpawn = undefined
 
@@ -5165,9 +5162,14 @@ mlist.forEach(function(element) {
   }
 });
 
+var websocketamount = 0
 bot.on('messageCreate', (msg) => {
     if (msg.content == '>ping') {
-        bot.createMessage(msg.channel.id, 'Pong! ' + GUID);
+      for (var websocket in websockets) {
+        websocketamount++
+      }
+      bot.createMessage(msg.channel.id, 'Pong!\n' + "Has bosses: " + String(isRunningBossInstance) + "\nConnections amount: " + websocketamount);
+      websocketamount = 0
     }
     if (msg.content == '>list') {
       bot.createMessage(msg.channel.id, mliststring);
@@ -5244,10 +5246,10 @@ bot.on('messageCreate', (msg) => {
           }
         bot.createMessage(msg.channel.id, "\n-=-DONE-=-");
       }
-    if (msg.content.startsWith('$summon ')) {
+    if (msg.content.startsWith('>summon ')) {
       if (msg.author.id == 345346351875358721) {
-        var spawnClass = msg.content.split("$summon ").pop().substr(0, 3)
-        console.log(msg.content.split("$summon ").pop().substr(0, 3))
+        var spawnClass = msg.content.split(">summon ").pop().substr(0, 3)
+        console.log(msg.content.split(">summon ").pop().substr(0, 3))
         var type = msg.content.split(" ").pop()
         if (spawnClass == 'bot') {
           botSpawn = type
@@ -5255,7 +5257,7 @@ bot.on('messageCreate', (msg) => {
         } else if (spawnClass == 'food') {
           
         } else {
-          bot.createMessage(msg.channel.id, "Was unable to complete request, unknown summon type: " + spawnClass + "  |  " + GUID);
+          bot.createMessage(msg.channel.id, "Was unable to complete request, unknown summon type: " + spawnClass);
         }
       } else {
         console.log("Unauthorized user", msg.author.username, "tried to broadcast")
@@ -5270,3 +5272,9 @@ bot.editStatus('online', {
 });
 
 bot.connect();
+
+if (Class.testbed8.UPGRADES_TIER_1) {
+  var isRunningBossInstance = false
+} else {
+  var isRunningBossInstance = true
+}
