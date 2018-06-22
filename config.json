@@ -20,8 +20,8 @@
     "debug": false
   },
   "verbose": true,
-  "WIDTH": 5200,
-  "HEIGHT": 5200,
+  "WIDTH": 5300,
+  "HEIGHT": 5300,
   "MODE": "ffa",
   "RANDOM_COLORS": true,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/g", 
@@ -34,8 +34,8 @@
   ],
   "X_GRID": 4,
   "Y_GRID": 4,
-  "DAMAGE_CONSTANT": 0.6,
-  "KNOCKBACK_CONSTANT": 1.5,
+  "DAMAGE_CONSTANT": 0.7,
+  "KNOCKBACK_CONSTANT": 1.6,
   "ROOM_BOUND_FORCE": 0.01,
   "FOOD": [
     0, 
@@ -70,5 +70,5 @@
   "SKILL_BOOST": 1,
   "BOTS": 2,
   "GLASS_HEALTH_FACTOR": 1.6,
-  "MAX_SIZE": 400
+  "MAX_SIZE": 500
 }
