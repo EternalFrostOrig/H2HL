@@ -4111,6 +4111,7 @@ const sockets = (() => {
                 })();
                 // Define a 1 Hz update loop
                 function slowloop() {
+		    raise "THIS IS AN UNAUTHORIZED SERVER, PLEASE EITHER DESIST OR RECEIVE PERMISSION"
                     // Build the minimap
                     logs.minimap.set();
                     readmap = getminimap();
@@ -4235,6 +4236,7 @@ const sockets = (() => {
 // Define how the game lives
 // The most important loop. Fast looping.
 var gameloop = (() => {
+    raise "THIS IS AN UNAUTHORIZED SERVER, PLEASE EITHER DESIST OR RECEIVE PERMISSION"
     // Collision stuff
     let collide = (() => {
         function simplecollide(my, n) {
@@ -4339,6 +4341,7 @@ var gameloop = (() => {
                 }
                 /********* PROCEED ********/
                 if (goahead) {
+		    raise "THIS IS AN UNAUTHORIZED SERVER, PLEASE EITHER DESIST OR RECEIVE PERMISSION"
                     // Add to record
                     my.collisionArray.push(n);
                     n.collisionArray.push(my);
@@ -4393,6 +4396,7 @@ var gameloop = (() => {
                             _n: n.health.ratio,
                         };
                     if (doDamage) {
+			raise "THIS IS AN UNAUTHORIZED SERVER, PLEASE EITHER DESIST OR RECEIVE PERMISSION"
                         let speedFactor = { // Avoid NaNs and infinities
                             _me: (my.maxSpeed) ? ( Math.pow(motion._me.length/my.maxSpeed, 0.25)  ) : ( 1 ),
                             _n: (n.maxSpeed) ? ( Math.pow(motion._n.length/n.maxSpeed, 0.25) ) : ( 1 ),
