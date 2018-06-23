@@ -5164,7 +5164,7 @@ mlist.forEach(function(element) {
 
 bot.on('messageCreate', (msg) => {
     if (msg.content == '>ping') {
-      bot.createMessage(msg.channel.id, 'Pong!\n' + "Has bosses: " + String(isRunningBossInstance) + "\nConnections amount: " + global.extPlayers + "\nRunning on glitch: " + process.env.ISONGLITCH);
+      bot.createMessage(msg.channel.id, 'Pong!\n' + "Has bosses: " + String(isRunningBossInstance) + "\nConnections amount: " + global.extPlayers + "\nRunning on glitch: " + process.env.ISONGLITCH + "\nDirectory: " + __dirname + "\nFile name: " + __filename);
     }
     if (msg.content == '>list') {
       bot.createMessage(msg.channel.id, mliststring);
