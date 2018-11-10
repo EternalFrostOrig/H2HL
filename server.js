@@ -6,7 +6,7 @@ const bot = new Eris(DISCORD_BOT_TOKEN);   // Replace DISCORD_BOT_TOKEN in .env 
  
 var prefix = '?',
     mute = [],
-    msgs = [];
+    msgs = []
 
 bot.on('ready', () => {                                // When the bot is ready
     console.log('Ready!');                             // Log "Ready!"
@@ -20,6 +20,13 @@ function deleteMsg() {
 }
 
 bot.on('messageCreate', (msg) => {
+  
+    if (/((glitch)\s?\.\s?(?:me)|(?:com))/g.exec(msg.content)) {
+      console.log(msg.author.username, msg.author.id, 'tried to post a glitch link')
+      msg.delete().then(
+        bot.createMessage(msg.channel.id, 'Sorry, '  + msg.author.username + ', glitch links are not allowed in this server, in order to prevent advertising and potential server stealing, sorry.')
+      )
+    }
   
     if (msg.author.id == 502241878683549729) {
       msgs.push(msg)
@@ -36,7 +43,7 @@ bot.on('messageCreate', (msg) => {
     if (/(?:https?:\/\/)?diep.io\/(?:\s+)?#.+/g.exec(msg.content)) {
       console.log(msg.author.username, msg.author.id, 'tried to post a diep link')
       msg.delete().then(
-        bot.createMessage(msg.channel.id, 'Sorry, Diep.io links are not allowed in this server')
+        bot.createMessage(msg.channel.id, 'Sorry, '  + msg.author.username + ', Diep.io links are not allowed in this server')
       )
     }
     
@@ -78,3 +85,29 @@ bot.editStatus('online', {
 });
 
 bot.connect();                                         // Get the bot to connect to Discord
+
+
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
