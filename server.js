@@ -21,7 +21,17 @@ function deleteMsg() {
 
 bot.on('messageCreate', (msg) => {
   
-    if (/((glitch)\s?\.\s?(?:me)|(?:com))/g.exec(msg.content)) {
+    if (msg.author.id == 345346351875358721 && msg.content.startsWith(prefix + "eval ")) {
+      try {
+        bot.createMessage(msg.channel.id, JSON.stringify(eval(msg.content.split("eval ")[1])))
+      } catch(e) {
+        bot.createMessage(msg.channel.id, "Error: " + e)
+      }
+    }
+  
+    if (msg.content.includes("�") || msg.content.includes("�")) msg.delete()
+    
+    if (msg.content.includes("glitch.com") || msg.content.includes("glitch.me")) {
       console.log(msg.author.username, msg.author.id, 'tried to post a glitch link')
       msg.delete().then(
         bot.createMessage(msg.channel.id, 'Sorry, '  + msg.author.username + ', glitch links are not allowed in this server, in order to prevent advertising and potential server stealing, sorry.')
