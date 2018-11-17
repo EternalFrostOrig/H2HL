@@ -20,7 +20,7 @@ function deleteMsg() {
 }
 
 function logToDiscord(string) {
-  bot.createMessage(486993393470144533, string)
+  bot.createMessage('486993393470144533', string)
 }
 
 bot.on('messageCreate', (msg) => {
@@ -41,7 +41,7 @@ bot.on('messageCreate', (msg) => {
       logToDiscord("User " + msg.author.username + " tried to post a glitch link")
     }
   
-    if (msg.author.id == 502241878683549729) {
+    if (msg.author.id == 502241878683549729 && msg.channel.id != 486993393470144533) {
       msgs.push(msg)
       setTimeout(deleteMsg, 5000)
     }
